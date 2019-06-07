@@ -1,0 +1,150 @@
+#Create seed to ensure truly random numbers
+import random
+seed1 = random.randint(1, 100)
+random.seed(seed1)
+
+class Winner:
+    def who_wins(uc1, uc2, hc1, hc2, table):
+        if uc1 not in table and uc2 not in table and hc1 not in table and hc2 not in table:
+            if (((uc1 > hc1) and (uc1 > hc2)) or ((uc2 > hc1) and (uc2 > hc2))):
+                print("You got the high card!")
+                return True
+            else:
+                print("The house got the high card!")
+                return False
+        if(((uc1 in table) or (uc2 in table)) and ((hc1 in table) or (hc2 in table))):
+            if((table.count(uc1) > table.count(hc1)) and (table.count(uc1) > table.count(hc2))):
+                return True
+            else:
+                return False
+            if((table.count(uc1) is table.count(hc1)) and (table.count(uc1) is table.count(hc2))):
+                if (((uc1 > hc1) and (uc1 > hc2)) or ((uc2 > hc1) and (uc2 > hc2))):
+                    print("You got the high pair!")
+                    return True
+                else:
+                    print("The house got the high pair!")
+                    return False
+
+
+winChose = Winner()
+
+#Generate values for cards
+unum1 = 5
+unum2 = 5
+hnum1 = random.randint(2, 14)
+hnum2 = random.randint(2, 14)
+flop1 = 5
+flop2 = 5
+flop3 = random.randint(2, 14)
+river = random.randint(2, 14)
+turn = random.randint(2, 14)
+
+tableCards = [flop1, flop2, flop3, river, turn]
+
+winwin = False
+
+#Actual card names
+masterkey = {
+    2: "2",
+    3: "3",
+    4: "4",
+    5: "5",
+    6: "6",
+    7: "7",
+    8: "8",
+    9: "9",
+    10: "10",
+    11: "Jack",
+    12: "Queen",
+    13: "King",
+    14: "Ace"
+}
+
+chips = 50
+raiseBet = 0
+fold = ""
+again = ""
+
+#Convert from numbers to names
+uname1 = masterkey[unum1]
+uname2 = masterkey[unum2]
+hname1 = masterkey[hnum1]
+hname2 = masterkey[hnum2]
+fname1 = masterkey[flop1]
+fname2 = masterkey[flop2]
+fname3 = masterkey[flop3]
+rname = masterkey[river]
+tname = masterkey[turn]
+
+
+
+print("Your hand: ", uname1, uname2)
+print("How much would you like to bet? (Balance: ", chips, ") ")
+bet = int(input())
+chips = chips - bet
+fold = input("Would you like to fold? (y/n) ")
+
+if(fold == "y"):
+    print("Too bad!")
+    print("The flop: ", fname1, fname2, fname3)
+    print("The river: ", fname1, fname2, fname3, rname)
+    print("The turn: ", fname1, fname2, fname3, rname, tname)
+    print("House hand: ", hname1, hname2)
+    again = input("House wins! Would you like to play again? (y/n) ")
+    
+elif(fold == "n"):
+    print("The flop: ", fname1, fname2, fname3)
+    fold = input("Would you like to fold? (y/n) ")
+    
+    if(fold == "y"):
+        print("Too bad!")
+        print("The river: ",  fname1, fname2, fname3, rname)
+        print("The turn: ", fname1, fname2, fname3, rname, tname)
+        print("House hand: ", hname1, hname2)
+        again = input("House wins! Would you like to play again? (y/n) ")
+    elif(fold == "n"):
+        raiseBet = int(input("Enter an amount to to raise your bet by: "))
+        bet = bet + raiseBet
+        chips = chips - raiseBet
+        print("The river: ",  fname1, fname2, fname3, rname)
+        fold = input("Would you like to fold? (y/n) ")
+        
+        if(fold == "y"):
+            print("Too bad!")
+            print("The turn: ", fname1, fname2, fname3, rname, tname)
+            print("House hand: ", hname1, hname2)
+            again = input("House wins! Would you like to play again? (y/n) ")
+        elif(fold == "n"):
+            print("The turn: ", fname1, fname2, fname3, rname, tname)
+            raiseBet = int(input("Enter an amount to to raise your bet by: "))
+            bet = bet + raiseBet
+            chips = chips - raiseBet
+            print("House hand: ", hname1, hname2)
+            if unum1 not in tableCards and unum2 not in tableCards and hnum1 not in tableCards and hnum2 not in tableCards:
+                if (((unum1 > hnum1) and (unum1 > hnum2)) or ((unum2 > hnum1) and (unum2 > hnum2))):
+                    print("You got the high card!")
+                    winwin = True
+                else:
+                    print("The house got the high card!")
+                    winwin = False
+                if(((unum1 in tableCards) or (unum2 in tableCards)) and ((hnum1 in tableCards) or (hnum2 in tableCards))):
+                    if((tableCards.count(unum1) > tableCards.count(hnum1)) and (tableCards.count(unum1) > tableCards.count(hnum2))):
+                        winwin =  True
+                    else:
+                        winwin = False
+                    if((tableCards.count(unum2) > tableCards.count(hnum1)) and (tableCards.count(unum2) > tableCards.count(hnum2))):
+                        winwin =  True
+                    else:
+                        winwin = False
+                if((tableCards.count(unum1) is tableCards.count(hnum1)) and (tableCards.count(unum1) is tableCards.count(hnum2))):
+                    if (((unum1 > hnum1) and (unum1 > hnum2)) or ((unum2 > hnum1) and (unum2 > hnum2))):
+                        print("You got the high pair!")
+                        winwin = True
+                    else:
+                        print("The house got the high pair!")
+                        winwin = False
+            print(winwin)
+            print(tableCards.count(unum2), tableCards.count(unum1), tableCards.count(hnum2), tableCards.count(hnum1))
+    
+
+
