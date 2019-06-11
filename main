@@ -17,23 +17,23 @@ while((again is "y") and chips > 0):
     ###### Generate values for cards ######
     #######################################
     
-    unum1 = random.randint(2, 14)
+    unum1 = 3
     
-    unum2 = random.randint(2, 14)
+    unum2 = 4
     
-    hnum1 = random.randint(2, 14)
+    hnum1 = 2
     
-    hnum2 = random.randint(2, 14)
+    hnum2 = 14
     
-    flop1 = random.randint(2, 14)
+    flop1 = 3
     
-    flop2 = random.randint(2, 14)
+    flop2 = 4
     
-    flop3 = random.randint(2, 14)
+    flop3 = 4
     
-    river = random.randint(2, 14)
+    river = 6
     
-    turn = random.randint(2, 14)
+    turn = 7
     
     #######################################
     
@@ -192,54 +192,37 @@ while((again is "y") and chips > 0):
     
                 print("House hand: ", hname1, hname2)
                 
+                #Create pools of cards that are in play for the player and AI
+                upool = [unum1, unum2, flop1, flop2, flop3, river, turn]
+                hpool = [hnum1, hnum2, tableCards]
+                
+                #Number of cards in each player's hand that are in their pool
+                upair1 = upool.count(unum1)
+                upair2 = upool.count(unum2)
+                hpair1 = hpool.count(hnum1)
+                hpair2 = hpool.count(hnum2)
+                print(upair1 + upair2)
     
                 ###############################
                 ###### WIN OR LOSE LOGIC ######
                 ###############################
                 
-                #All cases where neither the player have cards in common with the table
-                if ((unum1 not in tableCards) and (unum2 not in tableCards) and (hnum1 not in tableCards) and (hnum2 not in tableCards)):
-                    if((((unum1 > hnum1) and (unum1 > hnum2)) or ((unum2 > hnum1) and (unum2 > hnum2))) and (unum1 is not unum2) and (hnum1 is not hnum2)):
+                if(((upair1 + upair2) is 5) and ((hpair1 + hpair2) < 5)):
+                    winwin = True
+                    winCond = "You got a full house!"
+                elif(((upair1 > hpair1) and (upair1 > hpair2)) or ((upair2 > hpair1) and (upair2 > hpair2))):
+                    winwin = True
+                    winCond = "You got more pairs!"
+                elif(((upair1 < hpair1) and (upair1 < hpair2)) or ((upair2 < hpair1) and (upair2 < hpair2))):
+                    winwin = False
+                    winCond = "The house got more pairs!"
+                elif(upair1 is upair2 is hpair1 is hpair2):
+                    if(((unum1 > hnum1) and (unum1 > hnum2)) or ((unum2 > hnum1) and (unum2 > hnum2))):
                         winwin = True
                         winCond = "You got the high card!"
                     elif(((unum1 < hnum1) and (unum1 < hnum2)) or ((unum2 < hnum1) and (unum2 < hnum2))):
                         winwin = False
                         winCond = "The house got the high card!"
-                    elif((unum1 is unum2) and (hnum1 is not hnum2)):
-                        winwin = True
-                        winCond = "You got a pair!"
-                    elif((hnum1 is hnum2) and (unum1 is not unum2)):
-                        winCond = "The house got a pair!"
-                    elif((hnum1 is hnum2) and (unum1 is unum2)):
-                        if(unum1 > hnum1):
-                            winwin = True
-                            winCond = "You got the higher pair!"
-                        else:
-                            winCond = "The house got the higher pair!"
-                            
-                #Only the player has cards in common with the table
-                elif (((unum1 in tableCards) or (unum2 in tableCards)) and ((hnum1 not in tableCards) and (hnum2 not in tableCards))):
-                    winwin = True
-                    if(((tableCards.count(unum1) is 1) or (tableCards.count(unum2) is 1)) and (unum1 is not unum2)):
-                        winwin = True
-                        winCond = "You got a pair!"
-                    elif(((tableCards.count(unum1) is 2) or (tableCards.count(unum2) is 2)) and (unum1 is not unum2)):
-                        winwin = True
-                        winCond = "You got three of a kind!"
-                    elif(((tableCards.count(unum1) is 3) or (tableCards.count(unum2) is 3)) and (unum1 is not unum2)):
-                        winwin = True
-                        winCond = "You got four of a kind!"
-                        
-                #Only the house has cards in common with the table 
-                elif (((hnum1 in tableCards) or (hnum2 in tableCards)) and ((unum1 not in tableCards) and (unum2 not in tableCards))):
-                    winwin = False
-                    if(((tableCards.count(hnum1) is 1) or (tableCards.count(hnum2) is 1)) and (hnum1 is not hnum2)):
-                        winCond = "The house got a pair!"
-                    elif(((tableCards.count(hnum1) is 2) or (tableCards.count(hnum2) is 2)) and (hnum1 is not hnum2)):
-                        winCond = "The house got three of a kind!"
-                    elif(((tableCards.count(hnum1) is 3) or (tableCards.count(hnum2) is 3)) and (hnum1 is not hnum2)):
-                        winCond = "The house got four of a kind!"
-                
                 
                 ###############################
                 
