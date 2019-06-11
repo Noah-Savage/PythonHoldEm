@@ -17,23 +17,53 @@ while((again is "y") and chips > 0):
     ###### Generate values for cards ######
     #######################################
     
-    unum1 = 3
+    unum1 = random.randint(2, 14)
     
-    unum2 = 4
+    unum2 = random.randint(2, 14)
+        
+    hnum1 = random.randint(2, 14)
+        
+    hnum2 = random.randint(2, 14)
+        
+    flop1 = random.randint(2, 14)
+        
+    flop2 = random.randint(2, 14)
+        
+    flop3 = random.randint(2, 14)
+        
+    river = random.randint(2, 14)
+        
+    turn = random.randint(2, 14)
     
-    hnum1 = 2
+    #Create pools of cards that are in play for the player and AI
+    upool = [unum1, unum2, flop1, flop2, flop3, river, turn]
+    hpool = [hnum1, hnum2, flop1, flop2, flop3, river, turn]
     
-    hnum2 = 14
+    #Number of cards in each player's hand that are in their pool
+    upair1 = upool.count(unum1)
+    upair2 = upool.count(unum2)
+    hpair1 = hpool.count(hnum1)
+    hpair2 = hpool.count(hnum2)
+
+    #Ensure there are at most 4 of any card
+    while((upool.count(unum1) > 4) or (upool.count(unum2) > 4) or (upool.count(flop1) > 4) or (upool.count(flop2) > 4) or (upool.count(flop3) > 4) or (upool.count(river) > 4) or (upool.count(turn) > 4) or (hpool.count(hnum1) > 4) or (hpool.count(hnum2) > 4) or (hpool.count(flop1) > 4) or (hpool.count(flop2) > 4) or (hpool.count(flop3) > 4) or (hpool.count(river) > 4) or (hpool.count(turn) > 4)):
+        unum1 = random.randint(2, 14)
     
-    flop1 = 3
-    
-    flop2 = 4
-    
-    flop3 = 4
-    
-    river = 6
-    
-    turn = 7
+        unum2 = random.randint(2, 14)
+        
+        hnum1 = random.randint(2, 14)
+        
+        hnum2 = random.randint(2, 14)
+        
+        flop1 = random.randint(2, 14)
+        
+        flop2 = random.randint(2, 14)
+        
+        flop3 = random.randint(2, 14)
+        
+        river = random.randint(2, 14)
+        
+        turn = random.randint(2, 14)
     
     #######################################
     
@@ -117,18 +147,15 @@ while((again is "y") and chips > 0):
                     bet = bet
                     while((chips - bet) < 0):
                         bet = int(input("You dont have that many chips! Input another bet: "))
+                    chips = chips - bet
                     break
                 except ValueError:
                     print("Not a valid bet!")
-    
-    chips = chips - bet
     
     fold = input("Would you like to fold? (y/n) ")
     while((fold is not "y") and (fold is not "n")):
         fold = input("Invalid answer! Would you like to fold? (y/n) ")
      
-    
-    
     if(fold == "y"):
     
         print("Too bad!")
@@ -144,8 +171,6 @@ while((again is "y") and chips > 0):
         again = input("House wins! Would you like to play again? (y/n) ")
         
         
-        
-    
     elif(fold == "n"):
     
         print("The flop: ", fname1, fname2, fname3)
@@ -154,7 +179,6 @@ while((again is "y") and chips > 0):
         while((fold is not "y") and (fold is not "n")):
             fold = input("Invalid answer! Would you like to fold? (y/n) ")
     
-        
     
         if(fold == "y"):
     
@@ -172,18 +196,15 @@ while((again is "y") and chips > 0):
             while True:
                 try:
                     raiseBet = int(input("Enter an amount to raise your bet by: "))
-                    newChips = chips - bet - raiseBet
-                    while(newChips < 0):
+                    newChips = chips - raiseBet
+                    while((newChips < 0) and (raiseBet is not 0)):
                         raiseBet = int(input("You dont have that many chips! Input another bet: "))
                     raiseBet = raiseBet
+                    bet = bet + raiseBet
                     break
                 except ValueError:
                     print("Not a valid bet!")
-                
-    
-            bet = bet + raiseBet
-    
-            chips = chips - raiseBet
+
     
             print("The river: ",  fname1, fname2, fname3, rname)
     
@@ -210,40 +231,37 @@ while((again is "y") and chips > 0):
                 while True:
                     try:
                         raiseBet = int(input("Enter an amount to raise your bet by: "))
-                        newChips = chips - bet - raiseBet
-                        while(newChips < 0):
+                        newChips = chips - raiseBet
+                        while((newChips < 0) and (raiseBet is not 0)):
                             raiseBet = int(input("You dont have that many chips! Input another bet: "))
                         raiseBet = raiseBet
+                        bet = bet + raiseBet
+                        chips = chips - raiseBet
                         break
                     except ValueError: 
                         print("Not a valid bet!")
-    
-                bet = bet + raiseBet
-    
-                chips = chips - raiseBet
+
     
                 print("House hand: ", hname1, hname2)
                 
-                #Create pools of cards that are in play for the player and AI
-                upool = [unum1, unum2, flop1, flop2, flop3, river, turn]
-                hpool = [hnum1, hnum2, tableCards]
-                
-                #Number of cards in each player's hand that are in their pool
-                upair1 = upool.count(unum1)
-                upair2 = upool.count(unum2)
-                hpair1 = hpool.count(hnum1)
-                hpair2 = hpool.count(hnum2)
+
     
                 ###############################
                 ###### WIN OR LOSE LOGIC ######
                 ###############################
                 
-                if(((upair1 + upair2) is 5) and ((hpair1 + hpair2) < 5)):
+                if((upair1 is 4) or (upair2 is 4)):
+                    winwin = True
+                    winCond = "You got 4 of a kind!"
+                elif((hpair1 is 4) or (hpair2 is 4)):
+                    winwin = False
+                    winCond = "The house got 4 of a kind!"
+                elif(((upair1 + upair2) is 5) and ((hpair1 + hpair2) < 5)):
                     winwin = True
                     winCond = "You got a full house!"
                 elif(((hpair1 + hpair2) is 5) and ((upair1 + upair2) < 5)):
                     winwin = True
-                    winCond = "You got a full house!"
+                    winCond = "The house got a full house!"
                 elif(((upair1 > hpair1) and (upair1 > hpair2)) or ((upair2 > hpair1) and (upair2 > hpair2))):
                     winwin = True
                     winCond = "You got more pairs!"
