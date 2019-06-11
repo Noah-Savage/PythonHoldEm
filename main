@@ -109,13 +109,23 @@ while((again is "y") and chips > 0):
     
     print("Your hand: ", uname1, uname2)
     
-    print("How much would you like to bet? (Balance: ", chips, ") ")
     
-    bet = int(input())
+    #initial bet
+    while True:
+                try:
+                    bet = int(input("Enter an amount to bet: "))
+                    bet = bet
+                    while((chips - bet) < 0):
+                        bet = int(input("You dont have that many chips! Input another bet: "))
+                    break
+                except ValueError:
+                    print("Not a valid bet!")
     
     chips = chips - bet
     
     fold = input("Would you like to fold? (y/n) ")
+    while((fold is not "y") and (fold is not "n")):
+        fold = input("Invalid answer! Would you like to fold? (y/n) ")
      
     
     
@@ -141,6 +151,8 @@ while((again is "y") and chips > 0):
         print("The flop: ", fname1, fname2, fname3)
     
         fold = input("Would you like to fold? (y/n) ")
+        while((fold is not "y") and (fold is not "n")):
+            fold = input("Invalid answer! Would you like to fold? (y/n) ")
     
         
     
@@ -157,8 +169,17 @@ while((again is "y") and chips > 0):
             again = input("House wins! Would you like to play again? (y/n) ")
     
         elif(fold == "n"):
-    
-            raiseBet = int(input("Enter an amount to to raise your bet by: "))
+            while True:
+                try:
+                    raiseBet = int(input("Enter an amount to raise your bet by: "))
+                    newChips = chips - bet - raiseBet
+                    while(newChips < 0):
+                        raiseBet = int(input("You dont have that many chips! Input another bet: "))
+                    raiseBet = raiseBet
+                    break
+                except ValueError:
+                    print("Not a valid bet!")
+                
     
             bet = bet + raiseBet
     
@@ -167,6 +188,8 @@ while((again is "y") and chips > 0):
             print("The river: ",  fname1, fname2, fname3, rname)
     
             fold = input("Would you like to fold? (y/n) ")
+            while((fold is not "y") and (fold is not "n")):
+                fold = input("Invalid answer! Would you like to fold? (y/n) ")
     
             
     
@@ -184,7 +207,16 @@ while((again is "y") and chips > 0):
     
                 print("The turn: ", fname1, fname2, fname3, rname, tname)
     
-                raiseBet = int(input("Enter an amount to to raise your bet by: "))
+                while True:
+                    try:
+                        raiseBet = int(input("Enter an amount to raise your bet by: "))
+                        newChips = chips - bet - raiseBet
+                        while(newChips < 0):
+                            raiseBet = int(input("You dont have that many chips! Input another bet: "))
+                        raiseBet = raiseBet
+                        break
+                    except ValueError: 
+                        print("Not a valid bet!")
     
                 bet = bet + raiseBet
     
@@ -201,13 +233,15 @@ while((again is "y") and chips > 0):
                 upair2 = upool.count(unum2)
                 hpair1 = hpool.count(hnum1)
                 hpair2 = hpool.count(hnum2)
-                print(upair1 + upair2)
     
                 ###############################
                 ###### WIN OR LOSE LOGIC ######
                 ###############################
                 
                 if(((upair1 + upair2) is 5) and ((hpair1 + hpair2) < 5)):
+                    winwin = True
+                    winCond = "You got a full house!"
+                elif(((hpair1 + hpair2) is 5) and ((upair1 + upair2) < 5)):
                     winwin = True
                     winCond = "You got a full house!"
                 elif(((upair1 > hpair1) and (upair1 > hpair2)) or ((upair2 > hpair1) and (upair2 > hpair2))):
@@ -235,10 +269,12 @@ while((again is "y") and chips > 0):
                 print(winCond)
                 print("You have", chips, "chips left.")
                 again = input("Would you like to play again? (y/n) ")
+                while((again is not "y") and (again is not "n")):
+                    again = input("Not a valid answer! Would you like to play again? (y/n) ")
                     
             
                 
 if(chips is 0):
     print("You're out of chips! Thanks for playing!")
 else:
-    print("Thanks for playing!")
+   print("Thanks for playing!")
