@@ -200,6 +200,7 @@ while((again is "y") and chips > 0):
                     while((newChips < 0) and (raiseBet is not 0)):
                         raiseBet = int(input("You dont have that many chips! Input another bet: "))
                     raiseBet = raiseBet
+                    chips = chips - raiseBet
                     bet = bet + raiseBet
                     break
                 except ValueError:
@@ -265,14 +266,14 @@ while((again is "y") and chips > 0):
                 elif(((upair1 > hpair1) and (upair1 > hpair2)) or ((upair2 > hpair1) and (upair2 > hpair2))):
                     winwin = True
                     winCond = "You got more pairs!"
-                elif(((upair1 < hpair1) and (upair1 < hpair2)) or ((upair2 < hpair1) and (upair2 < hpair2))):
+                elif(((upair2 < hpair1) and (upair1 < hpair1)) or ((upair2 < hpair2) and (upair1 < hpair2))):
                     winwin = False
                     winCond = "The house got more pairs!"
                 elif(upair1 is upair2 is hpair1 is hpair2):
                     if(((unum1 > hnum1) and (unum1 > hnum2)) or ((unum2 > hnum1) and (unum2 > hnum2))):
                         winwin = True
                         winCond = "You got the high card!"
-                    elif(((unum1 < hnum1) and (unum1 < hnum2)) or ((unum2 < hnum1) and (unum2 < hnum2))):
+                    elif(((unum1 < hnum1) and (unum2 < hnum1)) or ((unum1 < hnum2) and (unum2 < hnum2))):
                         winwin = False
                         winCond = "The house got the high card!"
                 
