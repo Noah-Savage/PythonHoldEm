@@ -261,7 +261,7 @@ while((again is "y") and chips > 0):
                     winwin = True
                     winCond = "You got a full house!"
                 elif(((hpair1 + hpair2) is 5) and ((upair1 + upair2) < 5)):
-                    winwin = True
+                    winwin = False
                     winCond = "The house got a full house!"
                 elif(((upair1 > hpair1) and (upair1 > hpair2)) or ((upair2 > hpair1) and (upair2 > hpair2))):
                     winwin = True
