@@ -35,15 +35,12 @@ while((again is "y") and chips > 0):
         
     turn = random.randint(2, 14)
     
+        
     #Create pools of cards that are in play for the player and AI
     upool = [unum1, unum2, flop1, flop2, flop3, river, turn]
     hpool = [hnum1, hnum2, flop1, flop2, flop3, river, turn]
     
-    #Number of cards in each player's hand that are in their pool
-    upair1 = upool.count(unum1)
-    upair2 = upool.count(unum2)
-    hpair1 = hpool.count(hnum1)
-    hpair2 = hpool.count(hnum2)
+
 
     #Ensure there are at most 4 of any card
     while((upool.count(unum1) > 4) or (upool.count(unum2) > 4) or (upool.count(flop1) > 4) or (upool.count(flop2) > 4) or (upool.count(flop3) > 4) or (upool.count(river) > 4) or (upool.count(turn) > 4) or (hpool.count(hnum1) > 4) or (hpool.count(hnum2) > 4) or (hpool.count(flop1) > 4) or (hpool.count(flop2) > 4) or (hpool.count(flop3) > 4) or (hpool.count(river) > 4) or (hpool.count(turn) > 4)):
@@ -67,7 +64,28 @@ while((again is "y") and chips > 0):
     
     #######################################
     
+    
+    #Create pools of cards that are in play for the player and AI
+    upool = [unum1, unum2, flop1, flop2, flop3, river, turn]
+    hpool = [hnum1, hnum2, flop1, flop2, flop3, river, turn]
+    
+    #Number of cards in each player's hand that are in their pool
+    upair1 = upool.count(unum1)
+    upair2 = upool.count(unum2)
+    ucount = upair1 + upair2
+    hpair1 = hpool.count(hnum1)
+    hpair2 = hpool.count(hnum2)
+    hcount = hpair1 + hpair2
+    
     tableCards = [flop1, flop2, flop3, river, turn]
+    
+    if(tableCards.count(flop1) is 2 or tableCards.count(flop2) is 2 or tableCards.count(flop3) is 2 or tableCards.count(river) is 2 or tableCards.count(turn) is 2):
+        ucount = ucount + 2
+        hcount = hcount + 2
+        
+    if(tableCards.count(flop1) is 3 or tableCards.count(flop2) is 3 or tableCards.count(flop3) is 3 or tableCards.count(river) is 3 or tableCards.count(turn) is 3):
+        ucount = ucount + 3
+        hcount = hcount + 3
     
     winwin = False
     
@@ -155,6 +173,9 @@ while((again is "y") and chips > 0):
     fold = input("Would you like to fold? (y/n) ")
     while((fold is not "y") and (fold is not "n")):
         fold = input("Invalid answer! Would you like to fold? (y/n) ")
+        
+        
+    ##### FIRST TURN #####
      
     if(fold == "y"):
     
@@ -178,7 +199,14 @@ while((again is "y") and chips > 0):
         fold = input("Would you like to fold? (y/n) ")
         while((fold is not "y") and (fold is not "n")):
             fold = input("Invalid answer! Would you like to fold? (y/n) ")
-    
+            
+            
+        ### AI to make the CPU fold if they have nothing and you have a good hand ###    
+        if((hpair1 is 0 and hpair2 is 0) and ((upair1 > 2) or (upair2 > 2))):
+            print("The PC decided it wasn't his day! You win!")
+            chips = chips + bet
+            break
+            
     
         if(fold == "y"):
     
@@ -214,6 +242,12 @@ while((again is "y") and chips > 0):
                 fold = input("Invalid answer! Would you like to fold? (y/n) ")
     
             
+            ### AI to make the CPU fold if they have nothing and you have a good hand ###    
+            if((hpair1 is 0 and hpair2 is 0) and ((upair1 > 2) or (upair2 > 2))):
+                print("The PC decided it wasn't his day! You win!")
+                chips = chips + bet
+                break
+            
     
             if(fold == "y"):
     
@@ -233,7 +267,7 @@ while((again is "y") and chips > 0):
                     try:
                         raiseBet = int(input("Enter an amount to raise your bet by: "))
                         newChips = chips - raiseBet
-                        while((newChips < 0) and (raiseBet is not 0)):
+                        while((newChips < 0) and (chips is not 0)):
                             raiseBet = int(input("You dont have that many chips! Input another bet: "))
                         raiseBet = raiseBet
                         bet = bet + raiseBet
@@ -257,19 +291,19 @@ while((again is "y") and chips > 0):
                 elif((hpair1 is 4) or (hpair2 is 4)):
                     winwin = False
                     winCond = "The house got 4 of a kind!"
-                elif(((upair1 + upair2) is 5) and ((hpair1 + hpair2) < 5)):
+                elif((ucount is 5) and (hcount < 5)):
                     winwin = True
                     winCond = "You got a full house!"
-                elif(((hpair1 + hpair2) is 5) and ((upair1 + upair2) < 5)):
-                    winwin = False
+                elif((hcount is 5) and (ucount < 5)):
+                    winwin = True
                     winCond = "The house got a full house!"
-                elif(((upair1 > hpair1) and (upair1 > hpair2)) or ((upair2 > hpair1) and (upair2 > hpair2))):
+                elif(ucount > hcount):
                     winwin = True
                     winCond = "You got more pairs!"
-                elif(((upair2 < hpair1) and (upair1 < hpair1)) or ((upair2 < hpair2) and (upair1 < hpair2))):
+                elif(hcount > ucount):
                     winwin = False
                     winCond = "The house got more pairs!"
-                elif(upair1 is upair2 is hpair1 is hpair2):
+                elif(ucount is hcount):
                     if(((unum1 > hnum1) and (unum1 > hnum2)) or ((unum2 > hnum1) and (unum2 > hnum2))):
                         winwin = True
                         winCond = "You got the high card!"
